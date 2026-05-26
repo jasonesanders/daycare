@@ -108,9 +108,13 @@ def haversine(lat1, lon1, lat2, lon2):
 
 def download_bc_gov_csv():
     print("  Downloading BC Gov Child Care Map CSV...")
-    resp = requests.get(BC_GOV_CSV_URL, headers=HEADERS, timeout=30)
-    resp.raise_for_status()
-    return resp.text
+    try:
+        resp = requests.get(BC_GOV_CSV_URL, headers=HEADERS, timeout=30)
+        resp.raise_for_status()
+        return resp.text
+    except Exception as e:
+        print(f"  Warning: BC Gov CSV unavailable ({e}); skipping BC Gov source")
+        return None
 
 
 def parse_bc_gov_csv(csv_text):
@@ -1063,7 +1067,7 @@ def main():
     print("=== Vancouver Daycare Finder ===\n")
     print("[1/5] Pulling BC Gov facility data...")
     csv_text = download_bc_gov_csv()
-    facilities = parse_bc_gov_csv(csv_text)
+    facilities = parse_bc_gov_csv(csv_text) if csv_text is not None else []
 
     print("[2/5] Pulling WSTCOAST vacancy list...")
     wstcoast_entries, wstcoast_pdf_url = download_and_parse_wstcoast_pdf()
