@@ -81,6 +81,7 @@ class Facility:
     weequeue_updated: str = ""
     weequeue_badges: str = ""
     vch_facility_id: str = ""
+    vch_facility_type: str = ""
     vch_inspections: int = -1  # -1 = not looked up
     vch_critical_infractions: int = 0
     vch_noncritical_infractions: int = 0
@@ -677,6 +678,7 @@ def enrich_with_vch_inspections(facilities):
             if candidates:
                 vf = best_vch_match(fac, candidates)
                 fac.vch_facility_id = vf["id"]
+                fac.vch_facility_type = vf.get("facilityType", "")
                 fac.inspection_url = f"{VCH_BASE}/#/{VCH_PROGRAM_ID}/disclosure/facility/{vf['id']}"
                 if not fac.phone and vf.get("phoneNumber"):
                     fac.phone = vf["phoneNumber"]
@@ -877,16 +879,44 @@ def format_markdown(facilities, wstcoast_pdf_url=None):
     today = datetime.now().strftime("%Y-%m-%d")
     wstcoast_link = f"[WSTCOAST Vacancy List]({wstcoast_pdf_url})" if wstcoast_pdf_url else "WSTCOAST Vacancy List (not available)"
 
-    group_facs = [f for f in facilities if f.service_type == "Licensed Group"]
-    family_facs = [f for f in facilities if f.service_type == "Licensed Family"]
-    other_facs = [f for f in facilities if f.service_type not in ("Licensed Group", "Licensed Family")]
+    def effective_type(f):
+        if f.vch_facility_type:
+            return f.vch_facility_type
+        if f.service_type == "Licensed Group":
+            return "Group Child Care (type unknown)"
+        if f.service_type == "Licensed Family":
+            return "Family Child Care"
+        return "Unknown"
+
+    type_order = [
+        "Group Child Care (Under 36 Months)",
+        "Family Child Care",
+        "In-Home Multi-Age Child Care",
+        "Multi-Age Child Care",
+        "Group Child Care (30 Months to School Age)",
+        "Preschool",
+        "Group Child Care (type unknown)",
+        "Occasional Child Care",
+    ]
+
+    type_buckets = {}
+    for f in facilities:
+        t = effective_type(f)
+        type_buckets.setdefault(t, []).append(f)
 
     def sort_key(f):
         return (f.tier, f.distance_km if f.distance_km >= 0 else 999)
 
-    group_facs.sort(key=sort_key)
-    family_facs.sort(key=sort_key)
-    other_facs.sort(key=sort_key)
+    for facs in type_buckets.values():
+        facs.sort(key=sort_key)
+
+    ordered_types = []
+    for t in type_order:
+        if t in type_buckets:
+            ordered_types.append(t)
+    for t in type_buckets:
+        if t not in ordered_types:
+            ordered_types.append(t)
 
     lines = [
         "---",
@@ -928,37 +958,13 @@ def format_markdown(facilities, wstcoast_pdf_url=None):
         "",
     ]
 
-    # Licensed Group section
-    g_t1 = len([f for f in group_facs if f.tier == 1])
-    g_t2 = len([f for f in group_facs if f.tier == 2])
-    lines.append(f"## Licensed Group (Centre) ({len(group_facs)} facilities, {g_t1} confirmed + {g_t2} likely vacancies)")
-    lines.append("")
-    if not group_facs:
-        lines.append("None found.")
+    for type_name in ordered_types:
+        facs = type_buckets[type_name]
+        t1 = len([f for f in facs if f.tier == 1])
+        t2 = len([f for f in facs if f.tier == 2])
+        lines.append(f"## {type_name} ({len(facs)} facilities, {t1} confirmed + {t2} likely vacancies)")
         lines.append("")
-    else:
-        for fac in group_facs:
-            format_facility(fac, lines)
-
-    # Licensed Family section
-    f_t1 = len([f for f in family_facs if f.tier == 1])
-    f_t2 = len([f for f in family_facs if f.tier == 2])
-    lines.append(f"## Licensed Family (Home) ({len(family_facs)} facilities, {f_t1} confirmed + {f_t2} likely vacancies)")
-    lines.append("")
-    if not family_facs:
-        lines.append("None found.")
-        lines.append("")
-    else:
-        for fac in family_facs:
-            format_facility(fac, lines)
-
-    # Other/unknown type
-    if other_facs:
-        o_t1 = len([f for f in other_facs if f.tier == 1])
-        o_t2 = len([f for f in other_facs if f.tier == 2])
-        lines.append(f"## Other / Type Unknown ({len(other_facs)} facilities, {o_t1} confirmed + {o_t2} likely vacancies)")
-        lines.append("")
-        for fac in other_facs:
+        for fac in facs:
             format_facility(fac, lines)
 
     # Summary
@@ -969,12 +975,14 @@ def format_markdown(facilities, wstcoast_pdf_url=None):
     t1 = len([f for f in facilities if f.tier == 1])
     t2 = len([f for f in facilities if f.tier == 2])
     t3 = len([f for f in facilities if f.tier == 3])
-    lines.append(f"| | Group | Family | Other | Total |")
-    lines.append(f"|---|---|---|---|---|")
-    lines.append(f"| Confirmed vacancy | {g_t1} | {f_t1} | {len([f for f in other_facs if f.tier == 1])} | {t1} |")
-    lines.append(f"| Likely vacancy | {g_t2} | {f_t2} | {len([f for f in other_facs if f.tier == 2])} | {t2} |")
-    lines.append(f"| No known vacancy | {len([f for f in group_facs if f.tier == 3])} | {len([f for f in family_facs if f.tier == 3])} | {len([f for f in other_facs if f.tier == 3])} | {t3} |")
-    lines.append(f"| **Total** | **{len(group_facs)}** | **{len(family_facs)}** | **{len(other_facs)}** | **{len(facilities)}** |")
+    lines.append(f"| Facility Type | Count | Confirmed | Likely |")
+    lines.append(f"|---|---|---|---|")
+    for type_name in ordered_types:
+        facs = type_buckets[type_name]
+        ct1 = len([f for f in facs if f.tier == 1])
+        ct2 = len([f for f in facs if f.tier == 2])
+        lines.append(f"| {type_name} | {len(facs)} | {ct1} | {ct2} |")
+    lines.append(f"| **Total** | **{len(facilities)}** | **{t1}** | **{t2}** |")
     lines.append("")
     lines.append(f"Data pulled: {today}")
     lines.append("")
