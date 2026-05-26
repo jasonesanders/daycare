@@ -43,11 +43,7 @@ WEE_QUEUE_URL = "https://weequeue.ca/infant-daycare-openings/vancouver"
 
 GIST_ID = "5cd2bf016b161048eb2c37cb440e670e"
 GIST_URL = f"https://gist.github.com/jasonesanders/{GIST_ID}"
-DISCORD_WEBHOOK_URL = (
-    "https://discord.com/api/webhooks/"
-    "1508672805703516373/"
-    "uj2HfMkR0mAfmCxkth6tz7tlm94kUgxrUxO3Gd0Jxvyr5fyxzTNIaBYKsUvVoyw-iRCD"
-)
+DISCORD_WEBHOOK_URL = ""  # disabled
 
 VCH_INSPECTION_SEARCH = "https://inspections.vch.ca/#/home"
 VCH_PROGRAM_ID = "6e0e9442-3016-4294-83f4-0ea25b22ec5b"
@@ -86,6 +82,9 @@ class Facility:
     vch_facility_id: str = ""
     vch_inspections: int = -1  # -1 = not looked up
     vch_critical_infractions: int = 0
+    vch_noncritical_infractions: int = 0
+    vch_outstanding_critical: int = 0
+    vch_outstanding_noncritical: int = 0
     vch_last_inspection: str = ""
     tier: int = 3
 
@@ -619,24 +618,52 @@ def enrich_with_vch_inspections(facilities):
 
         print(f"  Loaded {len(all_vch)} VCH facility records")
 
-        # Build lookup by normalized name
+        # Build lookup by normalized name (multiple VCH records can share a name)
         vch_by_name = {}
         for vf in all_vch:
             name = (vf.get("facilityName") or "").strip()
             if name:
-                vch_by_name[normalize_name(name)] = vf
+                norm = normalize_name(name)
+                vch_by_name.setdefault(norm, []).append(vf)
+
+        def addr_score(fac, vf):
+            """Score how well a VCH record matches a facility by address."""
+            vch_addr = (vf.get("siteAddress") or "").lower()
+            vch_name = (vf.get("facilityName") or "").lower()
+            score = 0
+            fac_num = re.search(r"^#?\d+[-]?(\d+)?", fac.address.strip())
+            if fac_num:
+                num = fac_num.group().lstrip("#")
+                if num in vch_addr or num in vch_name:
+                    score += 10
+            if fac.postal_code:
+                pc = fac.postal_code.lower().replace(" ", "")
+                if pc in vch_addr.replace(" ", ""):
+                    score += 5
+            fac_street = re.sub(r"^\d+[-\s]*", "", fac.address.lower()).strip()
+            if fac_street and len(fac_street) > 3 and fac_street in vch_addr:
+                score += 3
+            return score
+
+        def best_vch_match(fac, candidates):
+            """Pick the best VCH match by comparing address."""
+            if len(candidates) == 1:
+                return candidates[0]
+            scored = [(addr_score(fac, vf), vf) for vf in candidates]
+            scored.sort(key=lambda x: -x[0])
+            return scored[0][1]
 
         # Match our facilities to VCH records
         matched = 0
         for fac in facilities:
             fac_norm = normalize_name(fac.name)
-            vf = vch_by_name.get(fac_norm)
-            if not vf:
-                for vch_norm, vf_candidate in vch_by_name.items():
-                    if name_match(fac.name, vf_candidate.get("facilityName", "")):
-                        vf = vf_candidate
-                        break
-            if vf:
+            candidates = vch_by_name.get(fac_norm, [])[:]
+            if not candidates:
+                for vch_norm, vch_list in vch_by_name.items():
+                    if name_match(fac.name, vch_list[0].get("facilityName", "")):
+                        candidates.extend(vch_list)
+            if candidates:
+                vf = best_vch_match(fac, candidates)
                 fac.vch_facility_id = vf["id"]
                 fac.inspection_url = f"{VCH_BASE}/#/{VCH_PROGRAM_ID}/disclosure/facility/{vf['id']}"
                 if not fac.phone and vf.get("phoneNumber"):
@@ -647,10 +674,74 @@ def enrich_with_vch_inspections(facilities):
 
         print(f"  Matched {matched} facilities to VCH records (deep links created)")
 
-        # Fetch inspection details for all matched facilities
+        # Fetch inspection history + outstanding infractions concurrently
         to_inspect = [f for f in facilities if f.vch_facility_id]
         inspected = 0
-        for fac in to_inspect:
+        batch_size = 10
+        for i in range(0, len(to_inspect), batch_size):
+            batch = to_inspect[i : i + batch_size]
+            fac_ids = [f.vch_facility_id for f in batch]
+            try:
+                results = page.evaluate(
+                    """async ([programId, facIds]) => {
+                        const out = {};
+                        await Promise.all(facIds.map(async (fid) => {
+                            try {
+                                const [detailResp, inspResp] = await Promise.all([
+                                    fetch(`/api/v0/portal/disclosure/facilityDetails/${programId}`, {
+                                        method: 'POST',
+                                        headers: {'Content-Type': 'application/json'},
+                                        body: JSON.stringify([fid])
+                                    }),
+                                    fetch(`/api/v0/portal/disclosure/program/${programId}/facility/${fid}/inspectionDetails/`)
+                                ]);
+                                const detail = await detailResp.json();
+                                const inspections = await inspResp.json();
+                                out[fid] = {
+                                    detail: Array.isArray(detail) && detail.length > 0 ? detail[0] : null,
+                                    inspections: Array.isArray(inspections) ? inspections : []
+                                };
+                            } catch(e) {
+                                out[fid] = null;
+                            }
+                        }));
+                        return out;
+                    }""",
+                    [VCH_PROGRAM_ID, fac_ids],
+                )
+                for fac in batch:
+                    r = results.get(fac.vch_facility_id)
+                    if not r:
+                        continue
+                    if r.get("detail"):
+                        d = r["detail"]
+                        fac.vch_outstanding_critical = d.get("outstandingCriticalInfractions") or 0
+                        fac.vch_outstanding_noncritical = d.get("outstandingNonCriticalInfractions") or 0
+                    insps = r.get("inspections", [])
+                    if insps:
+                        fac.vch_inspections = len(insps)
+                        fac.vch_critical_infractions = sum(
+                            (x.get("criticalInfractionCount") or 0) for x in insps
+                        )
+                        fac.vch_noncritical_infractions = sum(
+                            (x.get("nonCriticalInfractionCount") or 0) for x in insps
+                        )
+                        dates = [
+                            x.get("inspectionDate", "")[:10]
+                            for x in insps
+                            if x.get("inspectionDate")
+                        ]
+                        if dates:
+                            fac.vch_last_inspection = max(dates)
+                        inspected += 1
+            except Exception:
+                pass
+
+        print(f"  Fetched inspection data for {inspected}/{len(to_inspect)} facilities")
+
+        # Legacy single-fetch fallback for any that failed in batch
+        missed = [f for f in to_inspect if f.vch_inspections < 0]
+        for fac in missed:
             try:
                 inspections = page.evaluate(
                     """async ([programId, facilityId]) => {
@@ -666,6 +757,9 @@ def enrich_with_vch_inspections(facilities):
                     fac.vch_critical_infractions = sum(
                         (insp.get("criticalInfractionCount") or 0) for insp in inspections
                     )
+                    fac.vch_noncritical_infractions = sum(
+                        (insp.get("nonCriticalInfractionCount") or 0) for insp in inspections
+                    )
                     dates = [
                         insp.get("inspectionDate", "")[:10]
                         for insp in inspections
@@ -677,7 +771,9 @@ def enrich_with_vch_inspections(facilities):
             except Exception:
                 pass
 
-        print(f"  Fetched inspection details for {inspected}/{len(to_inspect)} facilities")
+        if missed:
+            print(f"  Retried {len(missed)} missed facilities individually")
+        print(f"  Fetched inspection data for {inspected}/{len(to_inspect)} facilities total")
         browser.close()
 
 
@@ -725,10 +821,17 @@ def format_facility(fac, lines):
         insp_parts = [f"{fac.vch_inspections} inspections on file"]
         if fac.vch_last_inspection:
             insp_parts.append(f"last: {fac.vch_last_inspection}")
-        if fac.vch_critical_infractions > 0:
-            insp_parts.append(f"**{fac.vch_critical_infractions} critical infractions**")
+
+        flags = []
+        if fac.vch_outstanding_critical > 0:
+            flags.append(f"**{fac.vch_outstanding_critical} outstanding critical**")
+        if fac.vch_outstanding_noncritical > 0:
+            flags.append(f"**{fac.vch_outstanding_noncritical} outstanding non-critical**")
+        if flags:
+            insp_parts.extend(flags)
         else:
-            insp_parts.append("0 critical infractions")
+            insp_parts.append("no outstanding infractions")
+
         insp_str = ", ".join(insp_parts)
         if fac.inspection_url:
             lines.append(f"Inspections: {insp_str} ([view]({fac.inspection_url}))")
