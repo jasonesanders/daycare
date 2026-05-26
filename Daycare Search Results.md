@@ -35,7 +35,7 @@ From 228 E 14th Ave. Radius: 5.0 km. Filtered to under-30-month availability.
 
 ---
 
-## Licensed Group (Centre) (182 facilities, 3 confirmed + 13 likely vacancies)
+## Licensed Group (Centre) (182 facilities, 3 confirmed + 11 likely vacancies)
 
 #### - [ ] Ikoka Childcare Learning Center 57Th **[VACANCY]**
 1025 57Th E Ave, Vancouver, V5X 1T4 (4.56 km)
@@ -61,12 +61,6 @@ Inspections: 7 inspections on file, last: 2024-07-02, no outstanding infractions
 Contact: 604-928-0951
 Inspections: 23 inspections on file, last: 2026-04-29, **5 outstanding non-critical** ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/22d5834a-0495-49fb-86fd-55368ae99731))
 
-#### - [ ] Community Montessori Children's Centre *[likely vacancy]*
-1461 19 Ave E, Vancouver, V5N 2H9 (1.99 km)
-Contact: 604-874-4622
-Wee Queue: Infant opening listed (updated 2025-07-21)
-Inspections: 6 inspections on file, last: 2025-12-15, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/4652e915-17a3-47a2-ae1c-9615db6a3ed3))
-
 #### - [ ] Little Munchkin Daycare Ltd. *[likely vacancy]*
 1070 29Th Ave W, Vancouver, V6H 2E3 (2.52 km)
 Contact: 604-655-1895
@@ -87,12 +81,6 @@ Inspections: 7 inspections on file, last: 2025-10-03, no outstanding infractions
 1469 Balfour Ave, Vancouver, V6H 1X9 (2.79 km)
 Contact: 604-655-1895
 Inspections: 7 inspections on file, last: 2025-10-03, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/cbb46d7f-47ca-4858-920c-2cf7b60cc226))
-
-#### - [ ] Garderie L'ile Aux Enfants *[likely vacancy]*
-5445 Baillie St, Vancouver, V5Z 3M6 (2.91 km)
-Contact: 604-736-5056
-Wee Queue: Infant opening listed (updated 2026-03-04)
-Inspections: 4 inspections on file, last: 2025-08-05, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/135fe99a-8ed9-4c45-81b3-35e85aa8107c))
 
 #### - [ ] Angels Playhouse Daycare Society(E 41St Ave) *[likely vacancy]*
 1634 E 41St Ave, Vancouver, V5P 1K5 (3.53 km)
@@ -296,6 +284,12 @@ Inspections: 6 inspections on file, last: 2026-01-02, no outstanding infractions
 Contact: 416-938-8024
 Inspections: 6 inspections on file, last: 2026-01-02, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/4102112a-0623-43f4-a7a2-d89154f017fd))
 
+#### - [ ] Community Montessori Children's Centre
+1461 19 Ave E, Vancouver, V5N 2H9 (1.99 km)
+Contact: 604-874-4622
+Wee Queue: Infant opening listed (stale, 308 days old) (updated 2025-07-21)
+Inspections: 6 inspections on file, last: 2025-12-15, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/4652e915-17a3-47a2-ae1c-9615db6a3ed3))
+
 #### - [ ] Singing Frog Aboriginal Head Start
 2150 mclean Dr, Vancouver, V5N 5X9 (2.07 km)
 Contact: 604-913-9128
@@ -435,6 +429,12 @@ Inspections: 6 inspections on file, last: 2025-09-26, no outstanding infractions
 #108-1500 Howe St, Vancouver, V6Z 2N1 (2.9 km)
 Contact: 604-385-5808
 Inspections: 5 inspections on file, last: 2025-08-14, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/1da952a4-d1cd-44eb-b998-e9e1baf88758))
+
+#### - [ ] Garderie L'ile Aux Enfants
+5445 Baillie St, Vancouver, V5Z 3M6 (2.91 km)
+Contact: 604-736-5056
+Wee Queue: Infant opening listed (stale, 82 days old) (updated 2026-03-04)
+Inspections: 4 inspections on file, last: 2025-08-05, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/135fe99a-8ed9-4c45-81b3-35e85aa8107c))
 
 #### - [ ] Societe De La Garderie V'la L'bon Vent
 5445 Baillie St, Vancouver, V5Z 3M6 (2.91 km)
@@ -956,7 +956,7 @@ Inspections: 2 inspections on file, last: 2026-02-02, no outstanding infractions
 Contact: 778-895-3185
 Inspections: 10 inspections on file, last: 2026-03-26, **5 outstanding non-critical** ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/4448bfa6-1833-41d8-a00f-723860d17384))
 
-## Licensed Family (Home) (80 facilities, 6 confirmed + 14 likely vacancies)
+## Licensed Family (Home) (80 facilities, 6 confirmed + 12 likely vacancies)
 
 #### - [ ] Small House Family Child Care **[VACANCY]**
 112-633 8Th Ave W, Vancouver, V5Z 1C7 (1.47 km)
@@ -995,12 +995,6 @@ Inspections: 8 inspections on file, last: 2026-03-05, no outstanding infractions
 Contact: 604-561-4084
 Vacancy: 2 spots available starting in June, one for under 3 years old, one for 3-5 years old
 Inspections: 8 inspections on file, last: 2025-09-09, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/a6ad92ad-fbcc-4509-9231-aa18079f4780))
-
-#### - [ ] "Laugh And Learn" Daycare *[likely vacancy]*
-101-503 16Th Ave W, Vancouver, V5Z 4N3 (1.12 km)
-Contact: 604-439-8454
-Wee Queue: Infant opening listed (updated 2026-04-23)
-Inspections: 5 inspections on file, last: 2026-03-17, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/af17ceeb-9f45-4c48-9788-95a528aae83e))
 
 #### - [ ] All Star's Licensed Family Child Care *[likely vacancy]*
 5483 Mackie St, Vancouver, V5Y 3H1 (2.53 km)
@@ -1055,12 +1049,6 @@ Contact: 604-365-9239 | www.nanadaycare.ca
 Wee Queue: Infant opening listed (updated 2026-05-15)
 Inspections: 10 inspections on file, last: 2026-02-23, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/b2f84fa9-3cd3-4924-a95c-539e0e04e042))
 
-#### - [ ] Apple’S Family Child Care *[likely vacancy]*
-21 60Th Ave W, Vancouver, V5X 1Z3 (4.69 km)
-Contact: 604-322-3573
-Wee Queue: Infant opening listed (updated 2026-04-14)
-Inspections: 1 inspections on file, last: 2026-05-13, **1 outstanding non-critical** ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/d2dc301f-ff24-46d5-9249-fb50644c519c))
-
 #### - [ ] Universe Child Care *[likely vacancy]*
 3309 8Th Ave E, Vancouver, V5M 0C6 (4.9 km)
 Contact: 604-559-2523
@@ -1108,6 +1096,12 @@ Inspections: 4 inspections on file, last: 2026-03-24, no outstanding infractions
 849 16Th Ave E, Vancouver, V5T 2V7 (1.04 km)
 Contact: 604-876-5476
 Inspections: 5 inspections on file, last: 2026-02-09, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/9023cc64-99fe-4ddc-9a1e-a5945d6c8cbb))
+
+#### - [ ] "Laugh And Learn" Daycare
+101-503 16Th Ave W, Vancouver, V5Z 4N3 (1.12 km)
+Contact: 604-439-8454
+Wee Queue: Infant opening listed (stale, 32 days old) (updated 2026-04-23)
+Inspections: 5 inspections on file, last: 2026-03-17, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/af17ceeb-9f45-4c48-9788-95a528aae83e))
 
 #### - [ ] Bambi World
 104-95 1St Ave E, Vancouver, V6A 0H6 (1.38 km)
@@ -1349,6 +1343,12 @@ Inspections: 4 inspections on file, last: 2025-04-10, **3 outstanding non-critic
 Contact: 604-365-6550 | helpinghandschildcare.ca
 Inspections: 8 inspections on file, last: 2025-09-19, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/dfec1ed4-5f6e-4e83-9995-7b3dfaa58468))
 
+#### - [ ] Apple’S Family Child Care
+21 60Th Ave W, Vancouver, V5X 1Z3 (4.69 km)
+Contact: 604-322-3573
+Wee Queue: Infant opening listed (stale, 41 days old) (updated 2026-04-14)
+Inspections: 1 inspections on file, last: 2026-05-13, **1 outstanding non-critical** ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/d2dc301f-ff24-46d5-9249-fb50644c519c))
+
 #### - [ ] Little Ducklings Family Day Care
 7228 Knight St, Vancouver, V5P 2W8 (4.7 km)
 Contact: 604-322-2942
@@ -1379,7 +1379,7 @@ Inspections: 3 inspections on file, last: 2026-03-18, **1 outstanding non-critic
 Contact: 778-838-3928
 Inspections: 6 inspections on file, last: 2025-12-10, **5 outstanding non-critical** ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/f96ff15b-5601-11d5-a695-00104b767af5))
 
-## Other / Type Unknown (22 facilities, 9 confirmed + 13 likely vacancies)
+## Other / Type Unknown (22 facilities, 9 confirmed + 9 likely vacancies)
 
 #### - [ ] Tiny Stars Licensed Family Child Care **[VACANCY]**
 Vancouver (distance unknown)
@@ -1488,27 +1488,27 @@ Contact: 778-919-3797
 Wee Queue: Infant opening listed (updated 2026-05-02)
 Inspections: 2 inspections on file, last: 2025-07-25, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/0868c874-62fd-483b-9f8f-44caa445e1fb))
 
-#### - [ ] Blueberry Muffins Family Child Care *[likely vacancy]*
+#### - [ ] Blueberry Muffins Family Child Care
 9-1065 11Th Ave W, Vancouver, BC V6H 1K2, Vancouver (distance unknown)
 Contact: 778-918-9000
-Wee Queue: Infant opening listed (updated 2026-03-24)
+Wee Queue: Infant opening listed (stale, 62 days old) (updated 2026-03-24)
 Inspections: 11 inspections on file, last: 2025-09-10, **1 outstanding non-critical** ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/fb905bf0-e025-4ecf-b4e2-21fa322cac05))
 
-#### - [ ] Garderie Tartine Et Chocolat *[likely vacancy]*
+#### - [ ] Garderie Tartine Et Chocolat
 7051 Killarney St, Vancouver, BC V5S 2Y5, Vancouver (distance unknown)
 Contact: 604-736-5056
-Wee Queue: Infant opening listed (updated 2026-03-04)
+Wee Queue: Infant opening listed (stale, 82 days old) (updated 2026-03-04)
 Inspections: 2 inspections on file, last: 2026-01-21, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/4ec163d2-5e52-4ce2-8bf8-e23e90de989c))
 
-#### - [ ] Catherine Family Day Care *[likely vacancy]*
+#### - [ ] Catherine Family Day Care
 2908 19Th Ave W, Vancouver, BC V6L 1E6, Vancouver (distance unknown)
 Contact: 604-739-0218
-Wee Queue: Infant opening listed (updated 2025-12-15)
+Wee Queue: Infant opening listed (stale, 161 days old) (updated 2025-12-15)
 
-#### - [ ] Mosaic Child Care Centre *[likely vacancy]*
+#### - [ ] Mosaic Child Care Centre
 2710 Commercial Dr, Vancouver, BC V5N 5P4, Vancouver (distance unknown)
 Contact: 604-254-9626
-Wee Queue: Infant opening listed (updated 2025-08-19)
+Wee Queue: Infant opening listed (stale, 279 days old) (updated 2025-08-19)
 Inspections: 6 inspections on file, last: 2025-10-09, no outstanding infractions ([view](https://inspections.vch.ca/#/6e0e9442-3016-4294-83f4-0ea25b22ec5b/disclosure/facility/2a636924-155f-477e-aabf-231e2398d100))
 
 ---
@@ -1518,8 +1518,8 @@ Inspections: 6 inspections on file, last: 2025-10-09, no outstanding infractions
 | | Group | Family | Other | Total |
 |---|---|---|---|---|
 | Confirmed vacancy | 3 | 6 | 9 | 18 |
-| Likely vacancy | 13 | 14 | 13 | 40 |
-| No known vacancy | 166 | 60 | 0 | 226 |
+| Likely vacancy | 11 | 12 | 9 | 32 |
+| No known vacancy | 168 | 62 | 4 | 234 |
 | **Total** | **182** | **80** | **22** | **284** |
 
 Data pulled: 2026-05-25

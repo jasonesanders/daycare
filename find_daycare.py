@@ -32,6 +32,7 @@ HOME_LNG = -123.1003308
 HOME_ADDR = "228 E 14th Ave"
 MAX_DISTANCE_KM = 5.0
 TARGET_AGE_MONTHS = 13
+STALE_DAYS = 30  # Wee Queue entries older than this are downgraded to Tier 3
 
 BC_GOV_CSV_URL = (
     "https://catalogue.data.gov.bc.ca/dataset/"
@@ -496,8 +497,19 @@ def enrich_with_weequeue(facilities, weequeue_entries):
 
 
 def assign_tiers(facilities):
+    today = datetime.now()
     for fac in facilities:
         if fac.tier <= 2:
+            # Downgrade stale Wee Queue-only Tier 2 entries
+            if fac.tier == 2 and not fac.wstcoast_vacancy and fac.weequeue_updated:
+                try:
+                    updated = datetime.strptime(fac.weequeue_updated, "%Y-%m-%d")
+                    age_days = (today - updated).days
+                    if age_days > STALE_DAYS:
+                        fac.tier = 3
+                        fac.weequeue_status += f" (stale, {age_days} days old)"
+                except ValueError:
+                    pass
             continue
         if fac.vacancy_under_36 and fac.vacancy_under_36.upper() not in ("N", "NO", ""):
             fac.tier = 2
