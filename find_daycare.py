@@ -821,13 +821,31 @@ def format_facility(fac, lines):
     if contact_parts:
         lines.append(f"Contact: {' | '.join(contact_parts)}")
 
+    # Source and vacancy info
+    sources = []
     if fac.wstcoast_vacancy:
         lines.append(f"Vacancy: {fac.wstcoast_vacancy}")
+        sources.append("WSTCOAST PDF")
     if fac.weequeue_status:
-        wq_line = f"Wee Queue: {fac.weequeue_status}"
+        wq_line = fac.weequeue_status
         if fac.weequeue_updated:
             wq_line += f" (updated {fac.weequeue_updated})"
-        lines.append(wq_line)
+        lines.append(f"Wee Queue: {wq_line}")
+        sources.append("Wee Queue")
+    if fac.bc_gov_source:
+        sources.append("BC Gov")
+    if not sources:
+        sources.append("unknown")
+    # Freshness date
+    freshness = ""
+    if fac.weequeue_updated:
+        freshness = fac.weequeue_updated
+    elif fac.vacancy_last_update:
+        freshness = fac.vacancy_last_update
+    if freshness:
+        lines.append(f"Source: {', '.join(sources)} | Last updated: {freshness}")
+    else:
+        lines.append(f"Source: {', '.join(sources)}")
 
     if fac.vch_inspections >= 0:
         insp_parts = [f"{fac.vch_inspections} inspections on file"]
