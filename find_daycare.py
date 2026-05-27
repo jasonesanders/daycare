@@ -591,9 +591,17 @@ def enrich_with_vch_inspections(facilities):
         return
 
     print("  Launching browser for VCH inspection lookup...")
+    # Find a usable Chromium binary: prefer playwright's managed browser, fall back to
+    # any chrome binary under /opt/pw-browsers (handles version mismatch in CI envs).
+    import glob as _glob
+    _chrome_candidates = _glob.glob("/opt/pw-browsers/chromium-*/chrome-linux/chrome")
+    _executable = _chrome_candidates[0] if _chrome_candidates else None
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
+        launch_kwargs = {"headless": True}
+        if _executable:
+            launch_kwargs["executable_path"] = _executable
+        browser = p.chromium.launch(**launch_kwargs)
+        page = browser.new_page(ignore_https_errors=True)
 
         # Load the site once to establish session
         page.goto(f"{VCH_BASE}/#/home", wait_until="networkidle", timeout=30000)
@@ -1088,7 +1096,10 @@ def main():
         print(f"  Removed {removed} facilities serving only older children")
 
     print("[5/6] Looking up VCH inspection reports...")
-    enrich_with_vch_inspections(facilities)
+    try:
+        enrich_with_vch_inspections(facilities)
+    except Exception as e:
+        print(f"  Warning: VCH inspection lookup failed: {e}")
 
     print("[6/8] Writing results...")
     md = format_markdown(facilities, wstcoast_pdf_url)
