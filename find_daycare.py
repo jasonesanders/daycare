@@ -594,7 +594,7 @@ def enrich_with_vch_inspections(facilities):
     # Find a usable Chromium binary: prefer playwright's managed browser, fall back to
     # any chrome binary under /opt/pw-browsers (handles version mismatch in CI envs).
     import glob as _glob
-    _chrome_candidates = _glob.glob("/opt/pw-browsers/chromium-*/chrome-linux/chrome")
+    _chrome_candidates = _glob.glob("/opt/pw-browsers/chromium-*/chrome-linux*/chrome")
     _executable = _chrome_candidates[0] if _chrome_candidates else None
     with sync_playwright() as p:
         launch_kwargs = {"headless": True}
