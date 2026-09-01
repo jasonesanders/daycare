@@ -1,11 +1,11 @@
 ---
-created: 2026-08-31
+created: 2026-09-01
 tags: [daycare, nora, vancouver]
 ---
 
 # Vancouver Daycare Search
 
-Generated 2026-08-31 for Nora (~13 months old).
+Generated 2026-09-01 for Nora (~13 months old).
 From 228 E 14th Ave. Radius: 5.0 km. Filtered to under-30-month availability.
 
 **Sources:**
@@ -43,6 +43,6 @@ From 228 E 14th Ave. Radius: 5.0 km. Filtered to under-30-month availability.
 |---|---|---|---|
 | **Total** | **0** | **0** | **0** |
 
-Data pulled: 2026-08-31
+Data pulled: 2026-09-01
 
 Re-run `python3 01-Projects/Daycare-Search/find_daycare.py` to refresh.
